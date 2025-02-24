@@ -1,0 +1,213 @@
+{% extends 'base.html' %} {% block content %}
+<div style=" margin-top: 100px">
+  {% if (current_user.username) %}
+  <h1>welcome {{current_user.username}}</h1>
+  {% else %}
+  <h1>welcome to admin page</h1>
+
+  {% endif %}
+  <div class="accordion" id="accordionExample">
+    <!-- First Item -->
+    <div class="accordion-item">
+      <h2 class="accordion-header">
+        <button
+          class="accordion-button collapsed"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#collapseOne"
+        >
+          login as super admin
+        </button>
+      </h2>
+      <div id="collapseOne" class="accordion-collapse collapse ">
+        <div class="accordion-body">
+          <form action="/login" method="post" style="font-size: small; text-align: center; max-width: 500px; margin: auto;">
+            <div class="mb-3">
+              <label for="exampleInputEmail1" class="form-label"
+                >Email address</label
+              >
+              <input
+                type="email"
+                class="form-control"
+                id="exampleInputEmail1"
+                aria-describedby="emailHelp"
+                name="email"
+              />
+            </div>
+            <div class="mb-3">
+              <label for="exampleInputPassword1" class="form-label"
+                >Password</label
+              >
+              <input
+                type="password"
+                class="form-control"
+                id="exampleInputPassword1"
+                name="password"
+              />
+            </div>
+            <div class="mb-3">
+              <label for="role">Select Role:</label>
+              <select name="role" id="role" class="form-control" required>
+                <!-- <option value="">Choose Role</option> -->
+                <!-- <option value="user">User</option> -->
+                <option value="superadmin">Super Admin</option>
+              </select>
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    
+    <!-- Second Item -->
+    <div class="accordion-item">
+      <h2 class="accordion-header">
+        <button
+          class="accordion-button collapsed"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#collapseTwo"
+        >
+          staf
+        </button>
+      </h2>
+      <div id="collapseTwo" class="accordion-collapse collapse">
+        <div class="accordion-body">
+          <table class="table">
+            <thead>
+              <tr>
+                <th scope="col">id</th>
+                <th scope="col">name</th>
+                <th scope="col">email</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for admin in admins %}
+              <tr>
+                <td>{{admin.id}}</td>
+                <td>{{admin.username}}</td>
+                <td>{{admin.email}}</td>
+                <td>
+                  {% if admin.email==current_user.email %}
+                    YOU
+                  {% endif %}
+                    
+                </td>
+              </tr>
+
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!--four item -->
+    <div class="accordion-item">
+      <h2 class="accordion-header">
+        <button
+          class="accordion-button collapsed"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#collapse4"
+        >
+          requests
+        </button>
+      </h2>
+      <div id="collapse4" class="accordion-collapse collapse">
+        <div class="accordion-body">
+          <table class="table">
+            <thead>
+              
+              <tr>
+                <th>ID</th>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Pet Name</th>
+                <th>Pet id</th>
+                <th>Email</th>
+                <th>Phone Number</th>
+                <th>Location</th>
+                <th>Message</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for contact in contacts %}
+              <tr>
+                <td>{{ contact.id }}</td>
+                <td>{{ contact.firstname }}</td>
+                <td>{{ contact.lastname }}</td>
+                <td>{{ contact.petname }}</td>
+                <td>{{ contact.petid }}</td>
+                <td>{{ contact.email }}</td>
+                <td>{{ contact.number }}</td>
+                <td>{{ contact.location }}</td>
+                <td>{{ contact.message }}</td>
+                <td>
+                  <form action="{{ url_for('deletecontbyadmin',id=contact.id) }}" method="POST">
+                    <input type="hidden" name="extra_data" value="another_value">
+                    <button type="submit" style="border: none; background: none; color: red; cursor: pointer;">
+                        Delete
+                    </button>
+                  </form>
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <!--five item -->
+    <div class="accordion-item">
+      <h2 class="accordion-header">
+        <button
+          class="accordion-button collapsed"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#collapse5"
+        >
+          letters
+        </button>
+      </h2>
+      <div id="collapse5" class="accordion-collapse collapse">
+        <div class="accordion-body">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Phone Number</th>
+                <th>Location</th>
+                <th>Message</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for letter in letters %}
+              <tr>
+                <td>{{ letter.id }}</td>
+                <td>{{ letter.firstname }}</td>
+                <td>{{ letter.lastname }}</td>
+                <td>{{ letter.number }}</td>
+                <td>{{ letter.location }}</td>
+                <td>{{ letter.message }}</td>
+                <td>
+                  <form action="{{ url_for('deleteletterbyadmin',id=letter.id) }}" method="POST">
+                    <input type="hidden" name="extra_data" value="another_value">
+                    <button type="submit" style="border: none; background: none; color: red; cursor: pointer;">
+                        Delete
+                    </button>
+                  </form>
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
